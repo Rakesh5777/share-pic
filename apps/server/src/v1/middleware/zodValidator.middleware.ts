@@ -1,4 +1,3 @@
-import { CustomError } from "../utils/error";
 import { NextFunction, Request, Response } from "express";
 
 type AsyncWrapperType = (
@@ -16,12 +15,8 @@ export const asyncWrapper = (schema: any): AsyncWrapperType => {
 };
 
 export const zodValidatorMiddleware = (schema: any) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    try {
-      schema.parse(req.body);
-      next();
-    } catch (error: any) {
-      throw new CustomError("BAD_REQUEST", "zodValidationErr", error?.errors);
-    }
+  return (req: Request, _res: Response, next: NextFunction) => {
+    schema.parse(req.body);
+    next();
   };
 };

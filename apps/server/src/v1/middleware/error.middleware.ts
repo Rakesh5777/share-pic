@@ -1,10 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { Prisma } from "@prisma/client";
+import { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
+import { generateErrorMessage } from "zod-error";
 import {
   getCauseFromError,
   getErrorFieldsFromError,
 } from "../utils/commonUtils";
-import { CustomError } from "../utils/error";
-import { Prisma } from "@prisma/client";
+import { CustomError, ERROR_CODE } from "../utils/error";
 
 export const errorHandler = (
   err: any,
@@ -12,18 +14,15 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  console.error(
-    "---------------------------------------------------------------"
-  );
   console.error(err);
   if (err instanceof CustomError) {
     return handleCustomError(err, res);
   } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
     return handlePrismaError(err, res);
+  } else if (err instanceof ZodError) {
+    return handleZodError(err, res);
   }
-  console.log(
-    "something asdfosdanflkadsfjlkasdjf alsdkjf adsklfjklasd fkalsdjflksdjflkasdj fsd ---------------------------"
-  );
+
   if (err.status || err.code) {
     return res.status(err.status || err.code).json({
       message: err.message || "Validation error",
@@ -39,10 +38,7 @@ export const errorHandler = (
 
 const handleCustomError = (err: CustomError, res: Response) => {
   switch (err.name) {
-    // case "zodValidationErr":
-    //   return res
-    //     .status(err.statusCode)
-    //     .json({ message: "Bad request", error: err.error });
+    // Add more cases as needed
     default:
       return res.status(err.code).json({ message: err.message, error: err });
   }
@@ -66,4 +62,36 @@ const handlePrismaError = (
         .status(400)
         .json({ message: `${getCauseFromError(err)}`, error: err });
   }
+};
+
+const handleZodError = (err: ZodError, res: Response) => {
+  const error = {
+    name: err.name,
+    message: generateErrorMessage(err.issues, {
+      maxErrors: 2,
+      delimiter: {
+        component: ": ",
+      },
+      message: {
+        enabled: true,
+        label: "",
+      },
+      path: {
+        enabled: true,
+        label: "",
+        type: "breadcrumbs",
+        arraySquareBrackets: false,
+      },
+      code: {
+        enabled: false,
+      },
+    }),
+    code: ERROR_CODE.UNPROCESSABLE_ENTITY,
+    status: false,
+  };
+
+  return res.status(error.code).json({
+    message: error.message,
+    error: error,
+  });
 };

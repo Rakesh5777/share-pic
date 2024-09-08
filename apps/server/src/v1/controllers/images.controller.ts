@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { saveImages } from "./service";
+import { saveImages } from "../services/images.service";
 
 export const saveImagesController = async (req: Request, res: Response) => {
   const { body } = req;

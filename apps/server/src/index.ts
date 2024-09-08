@@ -12,20 +12,7 @@ app.use(express.json());
 
 app.use(`/api/${apiVersion}`, router);
 
-// error handler implementation
-
-app.use(
-  (
-    err: any,
-    _req: express.Request,
-    res: express.Response,
-    _next: express.NextFunction
-  ) => {
-    console.log("..............----------------------- error handler");
-    errorHandler(err, _req, res, _next);
-  }
-);
-
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
