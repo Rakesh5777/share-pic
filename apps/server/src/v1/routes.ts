@@ -2,7 +2,7 @@ import express from "express";
 import { saveImagesController } from "./controllers/images.controller";
 import { zodValidatorMiddleware } from "./middleware/zodValidator.middleware";
 import { asyncWrapper } from "./utils/asyncWrapper";
-import { SaveImagesSchema } from "./validators/schema";
+import { SaveImagesSchema, SaveImagesType } from "./validators/schema";
 
 const router = express.Router();
 
