@@ -1,6 +1,5 @@
 import multer, { FileFilterCallback, MulterError } from "multer";
 import path from "path";
-import { CustomError } from "../utils/error";
 
 // Define allowed image MIME types
 const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
