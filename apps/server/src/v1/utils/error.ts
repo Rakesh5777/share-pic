@@ -19,6 +19,7 @@ export const ERROR_NAME = {
   NETWORK_ERROR: "Network error",
   RESOURCE_GONE: "Resource gone",
   PRECONDITION_FAILED: "Precondition failed",
+  INVALID_FILE_TYPE: "Invalid file type",
 };
 
 export const ERROR_CODE = {
@@ -42,6 +43,7 @@ export const ERROR_CODE = {
   NETWORK_ERROR: 502,
   RESOURCE_GONE: 410,
   PRECONDITION_FAILED: 412,
+  INVALID_FILE_TYPE: 415,
 };
 
 export class CustomError extends Error {

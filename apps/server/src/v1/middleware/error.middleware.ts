@@ -7,16 +7,18 @@ import {
   getErrorFieldsFromError,
 } from "../utils/commonUtils";
 import { CustomError, ERROR_CODE } from "../utils/error";
+import { deleteFolder } from "../utils/handleFolders";
 
 export const errorHandler = (
   err: any,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
+  console.error(typeof err);
   console.error(err);
   if (err instanceof CustomError) {
-    return handleCustomError(err, res);
+    return handleCustomError(err, req, res);
   } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
     return handlePrismaError(err, res);
   } else if (err instanceof ZodError) {
@@ -36,9 +38,11 @@ export const errorHandler = (
   });
 };
 
-const handleCustomError = (err: CustomError, res: Response) => {
+const handleCustomError = (err: CustomError, req: Request, res: Response) => {
   switch (err.name) {
-    // Add more cases as needed
+    case "INVALID_FILE_TYPE":
+      deleteFolder(req.folderPath);
+      return res.status(err.code).json({ message: err.message, error: err });
     default:
       return res.status(err.code).json({ message: err.message, error: err });
   }

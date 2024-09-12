@@ -1,15 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { createFolder } from "../utils/handleFolders";
 
-// Function to create a new folder for each request
-const createFolder = (folderPath: string) => {
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath, { recursive: true });
-  }
-};
-
-const generateFolderMiddleware = (
+export const generateFolderMiddleware = (
   req: Request,
   _res: Response,
   next: NextFunction
@@ -22,5 +15,3 @@ const generateFolderMiddleware = (
   req.folderPath = uniqueFolder; // Store folder path in request object
   next();
 };
-
-export default generateFolderMiddleware;
