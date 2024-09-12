@@ -1,4 +1,4 @@
-import multer, { FileFilterCallback } from "multer";
+import multer, { FileFilterCallback, MulterError } from "multer";
 import path from "path";
 import { CustomError } from "../utils/error";
 
@@ -25,7 +25,7 @@ const fileFilter: multer.Options["fileFilter"] = (
   if (allowedImageTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new CustomError("INVALID_FILE_TYPE", "Invalid file type"));
+    cb(new MulterError("LIMIT_UNEXPECTED_FILE"));
   }
 };
 
