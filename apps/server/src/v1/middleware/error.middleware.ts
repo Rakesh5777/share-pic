@@ -8,6 +8,7 @@ import {
 } from "../utils/commonUtils";
 import { CustomError, ERROR_CODE } from "../utils/error";
 import { deleteFolder } from "../utils/handleFolders";
+import { MulterError } from "multer";
 
 export const errorHandler = (
   err: any,
@@ -21,6 +22,8 @@ export const errorHandler = (
     return handlePrismaError(err, res);
   } else if (err instanceof ZodError) {
     return handleZodError(err, res);
+  } else if (err instanceof MulterError) {
+    return handleMulterError(err, req, res);
   }
 
   if (err.status || err.code) {
@@ -38,9 +41,7 @@ export const errorHandler = (
 
 const handleCustomError = (err: CustomError, req: Request, res: Response) => {
   switch (err.name) {
-    case "INVALID_FILE_TYPE":
-      deleteFolder(req.folderPath);
-      return res.status(err.code).json({ message: err.message, error: err });
+    // Add more cases as needed
     default:
       return res.status(err.code).json({ message: err.message, error: err });
   }
@@ -96,4 +97,27 @@ const handleZodError = (err: ZodError, res: Response) => {
     message: error.message,
     error: error,
   });
+};
+
+const handleMulterError = (err: MulterError, req: Request, res: Response) => {
+  switch (err.code) {
+    case "LIMIT_FILE_SIZE":
+      deleteFolder(req.folderPath);
+      return res.status(400).json({
+        message: "File size exceeds the limit",
+        error: err,
+      });
+    case "LIMIT_UNEXPECTED_FILE":
+      deleteFolder(req.folderPath);
+      return res.status(415).json({
+        message: "Unexpected field",
+        error: err,
+      });
+    default:
+      deleteFolder(req.folderPath);
+      return res.status(400).json({
+        message: "An error occurred while uploading the file",
+        error: err,
+      });
+  }
 };
