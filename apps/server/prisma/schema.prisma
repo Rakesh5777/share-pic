@@ -14,11 +14,10 @@ datasource db {
 }
 
 model ImageGroup {
-  id            String   @id @default(cuid())
+  id            String   @id
   images        Image[]
   expiryDate    DateTime
   createdAt     DateTime @default(now())
-  shareableLink String
 }
 
 model Image {

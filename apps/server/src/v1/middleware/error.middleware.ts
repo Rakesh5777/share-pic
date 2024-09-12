@@ -15,8 +15,6 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  console.error(typeof err);
-  console.error(err);
   if (err instanceof CustomError) {
     return handleCustomError(err, req, res);
   } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
