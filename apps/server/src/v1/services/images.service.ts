@@ -1,7 +1,8 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { deleteFolder } from "../utils/handleFolders";
 import { CustomError } from "../utils/error";
-import { createImageGroup } from "../scripts/images.script";
+import { createImageGroup, getImagesQuery } from "../scripts/images.script";
+import { constants } from "../utils/constants";
 
 export async function saveImages(request: Request) {
   try {
@@ -15,7 +16,8 @@ export async function saveImages(request: Request) {
     };
 
     const images = (files as Express.Multer.File[]).map((file) => ({
-      filePath: file.path,
+      fileName: file.filename,
+      filePath: `${folderId}/${file.filename}`,
     }));
 
     const data = await createImageGroup(imageGroup, images);
@@ -32,4 +34,13 @@ export async function saveImages(request: Request) {
       "Failed to save images in DB"
     );
   }
+}
+
+export async function getImages(req: Request, res: Response) {
+  const { groupId } = req.params; // Extract group ID from request parameters
+  const images = await getImagesQuery(groupId);
+  images.forEach((image) => {
+    image.filePath = `${req.protocol}://${req.get("host")}/${constants.staticFolder}/${image.filePath}`; // static image path
+  });
+  return images;
 }

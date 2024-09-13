@@ -14,15 +14,16 @@ datasource db {
 }
 
 model ImageGroup {
-  id            String   @id
-  images        Image[]
-  expiryDate    DateTime
-  createdAt     DateTime @default(now())
+  id         String   @id
+  images     Image[]
+  expiryDate DateTime
+  createdAt  DateTime @default(now())
 }
 
 model Image {
   id       String     @id @default(cuid())
-  filePath String
+  fileName  String
+  filePath  String
   group    ImageGroup @relation(fields: [groupId], references: [id])
   groupId  String
 }
