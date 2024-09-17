@@ -5,6 +5,9 @@ import { errorHandler } from "./v1/middleware/error.middleware";
 import { PrismaClient } from "@prisma/client";
 import path from "path";
 import { constants } from "./v1/utils/constants";
+import cron from "node-cron";
+import { deleteExpiredImageGroups } from "./v1/services/images.service";
+import { log } from "console";
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -14,7 +17,13 @@ const apiVersion = process.env.API_VERSION || "v1";
 app.use(
   `/${constants.staticFolder}`,
   express.static(path.join(process.env.UPLOADS_FOLDER!))
-); 
+);
+
+// Cron job to delete expired images
+cron.schedule("0 0 * * *", async () => {
+  // log("Running cron job to delete expired image groups");
+  deleteExpiredImageGroups();
+});
 
 export const prisma = new PrismaClient();
 

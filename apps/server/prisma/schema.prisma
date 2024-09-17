@@ -24,6 +24,6 @@ model Image {
   id       String     @id @default(cuid())
   fileName  String
   filePath  String
-  group    ImageGroup @relation(fields: [groupId], references: [id])
+  group    ImageGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
   groupId  String
 }

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteExpiredImageGroupsController,
   getImagesController,
   saveImagesController,
 } from "./controllers/images.controller";
@@ -17,5 +18,10 @@ router.post(
 );
 
 router.get("/images/:groupId", asyncWrapper(getImagesController));
+
+router.delete(
+  "/delete-expired-images",
+  asyncWrapper(deleteExpiredImageGroupsController)
+);
 
 export default router;

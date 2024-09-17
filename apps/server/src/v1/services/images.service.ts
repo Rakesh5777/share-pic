@@ -1,10 +1,19 @@
 import { Request, Response } from "express";
 import { checkImagesInFolder, deleteFolder } from "../utils/handleFolders";
 import { CustomError } from "../utils/error";
-import { createImageGroup, getImagesQuery } from "../scripts/images.script";
+import {
+  createImageGroup,
+  deleteExpiredImageGroupsInDb,
+  getExpiredImageGroupsIds,
+  getImagesQuery,
+} from "../scripts/images.script";
 import { constants } from "../utils/constants";
+import { ImageData, SaveImagesResponse } from "../types/images.types";
+import { log } from "console";
 
-export async function saveImages(request: Request) {
+export async function saveImages(
+  request: Request
+): Promise<SaveImagesResponse> {
   try {
     const { files, folderId } = request;
     const { expiryDate } = request.body;
@@ -36,7 +45,7 @@ export async function saveImages(request: Request) {
   }
 }
 
-export async function getImages(req: Request, res: Response) {
+export async function getImages(req: Request): Promise<ImageData[]> {
   const { groupId } = req.params; // Extract group ID from request parameters
 
   // check if images present in folder
@@ -52,5 +61,23 @@ export async function getImages(req: Request, res: Response) {
   images.forEach((image) => {
     image.filePath = `${req.protocol}://${req.get("host")}/${constants.staticFolder}/${image.filePath}`; // static image path
   });
+
   return images;
+}
+
+export async function deleteExpiredImageGroups(): Promise<void> {
+  // Get expired image groups
+  const expiredGroups = await getExpiredImageGroupsIds();
+  log("Expired groups", expiredGroups);
+  // Delete expired image groups
+  await deleteImageGroups(expiredGroups);
+  // Delete expired image groups from DB
+  await deleteExpiredImageGroupsInDb();
+}
+
+export async function deleteImageGroups(groupId: string[]): Promise<void> {
+  for (const id of groupId) {
+    const folderName = process.env.UPLOADS_FOLDER + "/" + id;
+    deleteFolder(folderName);
+  }
 }
