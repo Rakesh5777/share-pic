@@ -8,6 +8,10 @@ export const createFolder = (folderPath: string) => {
 
 export const deleteFolder = (folderPath: string) => {
   if (fs.existsSync(folderPath)) {
-    fs.rmdirSync(folderPath, { recursive: true });
+    fs.rmSync(folderPath, { recursive: true });
   }
+};
+
+export const checkImagesInFolder = (folderPath: string) => {
+  return fs.existsSync(folderPath);
 };
