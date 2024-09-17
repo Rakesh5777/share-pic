@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { checkImagesInFolder, deleteFolder } from "../utils/handleFolders";
 import { CustomError } from "../utils/error";
 import {
