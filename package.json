@@ -1,5 +1,5 @@
 {
-  "name": "share-pic",
+  "name": "snap-linkr",
   "private": true,
   "scripts": {
     "build": "turbo build",
