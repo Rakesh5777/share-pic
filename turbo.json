@@ -3,11 +3,12 @@
   "ui": "tui",
   "tasks": {
     "dev": {
-      "dependsOn": ["^db:generate"],
-      "cache": false
+      "dependsOn": ["db:generate"],
+      "cache": false,
+      "persistent": true
     },
     "build": {
-      "dependsOn": ["^db:generate"],
+      "dependsOn": ["db:generate"],
       "outputs": ["your-outputs-here"]
     },
     "db:generate": {
