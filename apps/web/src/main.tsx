@@ -17,6 +17,8 @@ const router = createBrowserRouter([
   },
 ]);
 
+export const serverUrl = process.env.SERVER_URL || "http://localhost:8080";
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />

@@ -12,6 +12,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { serverUrl } from "@/main";
 
 export default function UploadImages() {
   const [images, setImages] = useState<File[]>([]);
@@ -108,7 +109,7 @@ export default function UploadImages() {
 
   const generateLink = async () => {
     const formData = new FormData();
-    images.forEach((image, index) => {
+    images.forEach((image, _index) => {
       formData.append("images", image);
     });
 
@@ -117,7 +118,7 @@ export default function UploadImages() {
     formData.append("expiryDate", expiryDateTime.toISOString());
 
     try {
-      const response = await fetch("http://localhost:8080/api/v1/images", {
+      const response = await fetch(`${serverUrl}/api/v1/images`, {
         method: "POST",
         body: formData,
       });

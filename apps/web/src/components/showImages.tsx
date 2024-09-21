@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { serverUrl } from "@/main";
 import { Download, Maximize2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -21,9 +22,7 @@ export default function GroupRoute() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/images/${groupId}`
-        );
+        const response = await fetch(`${serverUrl}/api/v1/images/${groupId}`);
 
         if (!response.ok) {
           toast({

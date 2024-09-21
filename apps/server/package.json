@@ -4,6 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
     "db:container": "docker run --name postgres -d -e POSTGRES_PASSWORD=postgres -v /Users/rakesh/Desktop/rakesh/docker-storage/share-pic-db:/var/lib/postgresql/data -p 5432:5432 postgres",
     "db:studio": "npx prisma studio",
     "db:migrate": "npx prisma migrate dev",
