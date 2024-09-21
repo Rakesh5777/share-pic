@@ -54,9 +54,9 @@ export default function GroupRoute() {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") handlePrevious();
-      if (e.key === "ArrowRight") handleNext();
-      if (e.key === "Escape") setIsExpanded(false);
+      if (e?.key === "ArrowLeft") handlePrevious();
+      if (e?.key === "ArrowRight") handleNext();
+      if (e?.key === "Escape") setIsExpanded(false);
     },
     [handlePrevious, handleNext]
   );
