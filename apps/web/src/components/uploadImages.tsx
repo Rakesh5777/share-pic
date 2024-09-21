@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
-export default function HomeRoute() {
+export default function UploadImages() {
   const [images, setImages] = useState<File[]>([]);
   const [expiryDate, setExpiryDate] = useState("");
   const [generatedLink, setGeneratedLink] = useState("");

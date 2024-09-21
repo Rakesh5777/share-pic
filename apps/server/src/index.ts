@@ -7,11 +7,12 @@ import path from "path";
 import { constants } from "./v1/utils/constants";
 import cron from "node-cron";
 import { deleteExpiredImageGroups } from "./v1/services/images.service";
-import { log } from "console";
 
 const app = express();
 const port = process.env.PORT || 8080;
 const apiVersion = process.env.API_VERSION || "v1";
+
+app.use(cors());
 
 // Serve static images
 app.use(
@@ -27,7 +28,6 @@ cron.schedule("0 0 * * *", async () => {
 
 export const prisma = new PrismaClient();
 
-app.use(cors());
 app.use(express.json());
 
 app.use(`/api/${apiVersion}`, router);
