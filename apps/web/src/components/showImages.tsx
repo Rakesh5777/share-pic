@@ -142,7 +142,7 @@ export default function GroupRoute() {
         </Card>
       )}
       <Dialog open={isExpanded} onOpenChange={setIsExpanded}>
-        <DialogContent className="max-w-5xl w-full bg-white p-0">
+        <DialogContent className="max-w-6xl w-full bg-white p-0">
           <DialogTitle></DialogTitle>
           <div>
             <img
