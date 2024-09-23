@@ -17,7 +17,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-export const serverUrl = process.env.SERVER_URL || "http://localhost:8080";
+// take from URL href port from env files
+export const serverUrl = `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_SERVER_PORT}`;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

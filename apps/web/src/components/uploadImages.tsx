@@ -10,9 +10,11 @@ import {
   Link as LinkIcon,
   Image as ImageIcon,
   ExternalLink,
+  Trash2,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { serverUrl } from "@/main";
+import Logo from "./logo";
 
 export default function UploadImages() {
   const [images, setImages] = useState<File[]>([]);
@@ -133,14 +135,20 @@ export default function UploadImages() {
     }
   };
 
+  const clearAllImages = () => {
+    setImages([]);
+    setGeneratedLink("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const totalSize = images.reduce((acc, img) => acc + img.size, 0);
   const sizePercentage = (totalSize / (20 * 1024 * 1024)) * 100;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 flex flex-col items-center justify-center">
-      <div className="text-5xl font-bold mb-8 text-gray-800 tracking-tight">
-        Snap<span className="text-blue-600">Linkr</span>
-      </div>
+      <Logo />
       <Card className="w-full max-w-4xl bg-white shadow-lg">
         <CardContent className="p-8">
           <div
@@ -206,11 +214,24 @@ export default function UploadImages() {
               onChange={handleFileChange}
             />
           </div>
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-2 me-14">
             <span>{images.length}/10 images</span>
             <span>{(totalSize / (1024 * 1024)).toFixed(2)} MB / 20 MB</span>
           </div>
-          <Progress value={sizePercentage} className="h-2 mb-6" />
+          <div className="flex items-center space-x-4 mb-6">
+            <Progress value={sizePercentage} className="h-2 flex-grow" />
+            <Button
+              onClick={clearAllImages}
+              variant="outline"
+              size="sm"
+              className={`text-red-600 border-red-600 hover:bg-red-50 ${
+                images.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={images.length === 0}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
           <div className="flex space-x-4 mb-6">
             <div className="flex-grow">
               <Label

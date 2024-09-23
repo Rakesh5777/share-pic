@@ -6,6 +6,7 @@ import { serverUrl } from "@/main";
 import { Download, Maximize2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Logo from "./logo";
 
 interface ImageData {
   filePath: string;
@@ -96,9 +97,7 @@ export default function GroupRoute() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 flex flex-col items-center justify-center">
-      <div className="text-5xl font-bold mb-8 text-gray-800 tracking-tight">
-        Snap<span className="text-blue-600">Linkr</span>
-      </div>
+      <Logo />
       {!!images?.length && (
         <Card className="w-full max-w-6xl bg-white shadow-lg">
           <CardContent className="p-8">
@@ -141,15 +140,13 @@ export default function GroupRoute() {
         </Card>
       )}
       <Dialog open={isExpanded} onOpenChange={setIsExpanded}>
-        <DialogContent className="max-w-6xl w-full bg-white p-0">
+        <DialogContent className="max-w-8xl w-[90vw] h-[80vh] overflow-hidden bg-slate-200 p-0">
           <DialogTitle></DialogTitle>
           <div>
             <img
               src={images[currentImageIndex]?.filePath || ""}
               alt={`Expanded image ${currentImageIndex + 1}`}
-              width={1200}
-              height={800}
-              className="w-full h-auto object-contain"
+              className="w-auto h-auto object-contain"
             />
             <Button
               variant="outline"
