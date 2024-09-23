@@ -15,6 +15,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { serverUrl } from "@/main";
 import Logo from "./logo";
+import { toast } from "@/hooks/use-toast";
 
 export default function UploadImages() {
   const [images, setImages] = useState<File[]>([]);
@@ -129,6 +130,11 @@ export default function UploadImages() {
       const link = `${window.location.origin}/${groupId}`;
       setGeneratedLink(link);
       await navigator.clipboard.writeText(link);
+      toast({
+        title: "success",
+        description: "Link generated and copied to clipboard",
+        variant: "default",
+      });
     } catch (error) {
       console.error("Error generating link:", error);
       alert("Failed to generate link. Please try again.");
