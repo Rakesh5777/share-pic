@@ -128,7 +128,7 @@ export default function UploadImages() {
       const groupId = data.data.id;
       const link = `${window.location.origin}/${groupId}`;
       setGeneratedLink(link);
-      await navigator.clipboard.writeText(data.link);
+      await navigator.clipboard.writeText(link);
     } catch (error) {
       console.error("Error generating link:", error);
       alert("Failed to generate link. Please try again.");
